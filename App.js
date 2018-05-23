@@ -3,6 +3,9 @@ import {StyleSheet, Text, View} from 'react-native';
 import {AsyncStorage} from 'react-native';
 
 export default class App extends React.Component {
+  state = {
+
+  }
   componentWillMount() {
     const DECKS_KEY = 'DecksKey';
 
@@ -47,7 +50,20 @@ export default class App extends React.Component {
         console.log(decks);
       })
       .catch(err => console.log(err));
+
+      // doesn't fulfill or reject promise
+      AsyncStorage.getItem(DECKS_KEY)
+        .then(decks => {
+          console.log(decks);
+          this.setState({
+            decks
+          });
+        }, rejected => {
+          console.log(rejected);
+        })
+        .catch(err => console.log(err));
       
+        console.log('componentWillMount is invoked');
   }
 
   render() {
@@ -56,6 +72,7 @@ export default class App extends React.Component {
         <Text>Open up App.js to start working on your app!</Text>
         <Text>Changes you make will automatically reload.</Text>
         <Text>Shake your phone to open the developer menu.</Text>
+        <Text>{Object.keys(this.state)}</Text>
       </View>
     );
   }
